@@ -31,6 +31,65 @@ int LinearSearch(const vector<int>& arr, int value)
 
 //место для сортировок
 
+// Insertion Sort
+template <typename T>
+void InsertionSort(vector<T>& arr)
+{
+    // Операции: сравнение (operator>) и присваивание для сдвига элементов
+    for (size_t i = 1; i < arr.size(); ++i)
+    {
+        T key = arr[i];
+        int j = static_cast<int>(i) - 1;
+        while (j >= 0 && arr[j] > key)  // сравнение
+        {
+            arr[j + 1] = arr[j];  // сдвиг вправо (присваивание)
+            --j;
+        }
+        arr[j + 1] = key;  // вставка на место (присваивание)
+    }
+}
+
+
+// слияние двух отсортированных частей (для Merge Sort)
+template <typename T>
+void Merge(vector<T>& arr, int left, int mid, int right)
+{
+    vector<T> leftArr(arr.begin() + left, arr.begin() + mid + 1);
+    vector<T> rightArr(arr.begin() + mid + 1, arr.begin() + right + 1);
+    
+    int i = 0, j = 0, k = left;
+    
+    // Сравнение элементов и копирование меньшего 
+    while (i < leftArr.size() && j < rightArr.size())
+    {
+        if (leftArr[i] <= rightArr[j])  // сравнение
+            arr[k++] = leftArr[i++];     // копирование
+        else
+            arr[k++] = rightArr[j++];
+    }
+    // Копирование остатков
+    while (i < leftArr.size()) arr[k++] = leftArr[i++];
+    while (j < rightArr.size()) arr[k++] = rightArr[j++];
+}
+
+template <typename T>
+void MergeSortRecursive(vector<T>& arr, int left, int right)
+{
+    if (left >= right) return;
+    int mid = left + (right - left) / 2;
+    MergeSortRecursive(arr, left, mid);
+    MergeSortRecursive(arr, mid + 1, right);
+    Merge(arr, left, mid, right);  // слияние с операциями сравнения и копирования
+}
+
+// Merge Sort
+template <typename T>
+void MergeSort(vector<T>& arr)
+{
+    if (!arr.empty())
+        MergeSortRecursive(arr, 0, static_cast<int>(arr.size()) - 1);
+}
+
 int main()
 {
     const int N = 100000;  // размер массива
