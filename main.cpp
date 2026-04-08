@@ -29,6 +29,27 @@ int LinearSearch(const vector<int>& arr, int value)
     return -1; // не нашли
 }
 
+// Бинарный поиск (пункт 4), шаблонная версия
+template<typename T>
+int BinarySearch(const vector<T>& arr, const T& value)
+{
+    int left = 0;
+    int right = static_cast<int>(arr.size()) - 1;
+
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == value)
+            return mid;
+        else if (arr[mid] < value)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return -1;
+}
+
 /*  Быстрая сортировка (Quick Sort), шаблонная функция (по пункту 3)
     Операции, необходимые для сортировки:
     1. Сравнение (operator< (arr[i] < pivot)) — определяет порядок элементов
